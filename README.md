@@ -12,9 +12,9 @@
 - Valid boards must have a length of 9, and only include the characters `o` (representing the Server), `x` (representing the Player), and ` ` (whitespace)
 - Either player can initiate a game
 - Example queries:
-  - (Player makes first move) https://pure-coast-27371.herokuapp.com/?board=        x
-  - (Server invited to make first move) https://pure-coast-27371.herokuapp.com/?board=        
-  - (Mid-game, Server's turn) https://pure-coast-27371.herokuapp.com/?board=xo  o  x 
+  - (Player makes first move) [https://pure-coast-27371.herokuapp.com/?board=%20%20%20%20%20%20%20%20x]
+  - (Server invited to make first move) [https://pure-coast-27371.herokuapp.com/?board=%20%20%20%20%20%20%20%20%20]
+  - (Mid-game, Server's turn) [https://pure-coast-27371.herokuapp.com/?board=xo%20%20o%20%20x%20]
 
 ## Algorithm Breakdown
 I wanted to write an algorithm that would do its utmost to win...and if all else fails, block the Player from winning, resulting in a tie!
