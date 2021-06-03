@@ -71,7 +71,7 @@ const minimax = (board, isMaximising) => {
         let boardArray = board.split("");
         boardArray[index] = "o";
         // look at possible moves in next game turn (change of player + role)
-        let score = minimax(boardArray.join(""), true);
+        let score = minimax(boardArray.join(""), false);
         console.log(`MAXimising score ${score}`);
         console.log(`MAXimising best score ${bestScore}`);
 
@@ -92,7 +92,7 @@ const minimax = (board, isMaximising) => {
         let boardArray = board.split("");
         boardArray[index] = "x";
         // look at possible moves in next game turn (change of player + role)
-        let score = minimax(boardArray.join(""), false);
+        let score = minimax(boardArray.join(""), true);
         console.log(`MINimising score ${score}`);
         console.log(`MINimising best score ${bestScore}`);
         bestScore = Math.min(score, bestScore);
