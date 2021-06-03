@@ -1,0 +1,19 @@
+{
+  "name": "tictactoeapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GroomedGorilla/tictactoeapi.git"
+  },
+  "author": "Julian Zammit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GroomedGorilla/tictactoeapi/issues"
+  },
+  "homepage": "https://github.com/GroomedGorilla/tictactoeapi#readme"
+}
