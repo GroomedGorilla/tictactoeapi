@@ -6,10 +6,33 @@ const scoring = {
   tie: 0,
 };
 
+// arbitrarily chose server Maximising as default
+let serverMaximising = true;
+// add roles for "maximising" and "minimising" player
+let roleMapping = {
+  o: "max",
+  x: "min",
+  tie: "tie",
+};
+
 const serverTurn = (board) => {
   //   if server gets the first move, go for centre
   if (board.trim() == "") {
     return "    o    ";
+  }
+
+  // determine which player went first (minimising vs maximising)
+  // server is/was first player if:
+  // - empty board
+  // - player has played the same number of turns
+  const numPlayerTurns = (board.match(/x/g) || []).length;
+  const numServerTurns = (board.match(/o/g) || []).length;
+  serverMaximising = board.trim() == "" || numPlayerTurns == numServerTurns;
+  console.log(serverMaximising ? "Server MAX" : "Server MIN");
+
+  if (!serverMaximising) {
+    roleMapping["o"] = "min";
+    roleMapping["x"] = "max";
   }
 
   const serverMove = calcServerMove(board);
