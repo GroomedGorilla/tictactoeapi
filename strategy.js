@@ -1,8 +1,8 @@
 const { serverCharacter, playerCharacter, gameOver } = require("./board");
 
 const scoring = {
-  o: 1,
-  x: -1,
+  max: 1,
+  min: -1,
   tie: 0,
 };
 
