@@ -91,4 +91,5 @@ module.exports = {
   playerWins,
   gameOver,
   serverCharacter,
+  playerCharacter,
 };

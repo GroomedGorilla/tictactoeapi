@@ -1,4 +1,4 @@
-const { serverCharacter, gameOver } = require("./board");
+const { serverCharacter, playerCharacter, gameOver } = require("./board");
 
 const scoring = {
   o: 1,
@@ -40,8 +40,8 @@ const serverTurn = (board) => {
 };
 
 const calcServerMove = (board) => {
-  // minimax initial loop - Server is Maximising
-  let bestScore = -Infinity;
+  //   adapt bestScore based on whether server is Maximising or not
+  let bestScore = serverMaximising ? -Infinity : Infinity;
   let chosenMoveIndex;
   // get indices of white space (i.e. possible moves)
   let emptyIndices = [];
@@ -55,11 +55,19 @@ const calcServerMove = (board) => {
       boardArray[index] = serverCharacter;
       // look at possible moves in next game turn (change of player + role)
       let testMove = boardArray.join("");
-      let score = minimax(testMove, false);
-      if (score > bestScore) {
-        bestScore = score;
-        chosenMoveIndex = index;
-        console.log(`Chosen move = ${chosenMoveIndex}`);
+      let score = minimax(testMove, !serverMaximising);
+      if (serverMaximising) {
+        if (score > bestScore) {
+          bestScore = score;
+          chosenMoveIndex = index;
+          console.log(`Chosen move = ${chosenMoveIndex}`);
+        }
+      } else {
+        if (score < bestScore) {
+          bestScore = score;
+          chosenMoveIndex = index;
+          console.log(`Chosen move = ${chosenMoveIndex}`);
+        }
       }
     }
   });
@@ -75,13 +83,16 @@ const minimax = (board, isMaximising) => {
   // check if game is over (i.e. terminal state)
   let gameResult = gameOver(board);
   if (gameResult) {
+    // if game over, return correct score by role
     //TODO check this!
     console.log(`Game Result = ${gameResult}`);
-    console.log(`Scoring = ${scoring[gameResult]}`);
-    return scoring[gameResult];
+    console.log(`Role Mapping = ${roleMapping[gameResult]}`);
+    console.log(`Scoring = ${scoring[roleMapping[gameResult]]}`);
+    return scoring[roleMapping[gameResult]];
   }
 
   if (isMaximising) {
+    // Maximising turn
     let bestScore = -Infinity;
     // get indices of white space (i.e. possible moves)
     let emptyIndices = [];
@@ -92,7 +103,8 @@ const minimax = (board, isMaximising) => {
     emptyIndices.forEach((index) => {
       if (board[index] === " ") {
         let boardArray = board.split("");
-        boardArray[index] = "o";
+        // place server character if maximising, else player character
+        boardArray[index] = serverMaximising ? serverCharacter : playerCharacter;
         // look at possible moves in next game turn (change of player + role)
         let score = minimax(boardArray.join(""), false);
         console.log(`MAXimising score ${score}`);
@@ -103,6 +115,7 @@ const minimax = (board, isMaximising) => {
     });
     return bestScore;
   } else {
+    // Minimising turn
     bestScore = Infinity;
     // get indices of white space (i.e. possible moves)
     let emptyIndices = [];
@@ -113,7 +126,7 @@ const minimax = (board, isMaximising) => {
     emptyIndices.forEach((index) => {
       if (board[index] === " ") {
         let boardArray = board.split("");
-        boardArray[index] = "x";
+        boardArray[index] = serverMaximising ? playerCharacter : serverCharacter;
         // look at possible moves in next game turn (change of player + role)
         let score = minimax(boardArray.join(""), true);
         console.log(`MINimising score ${score}`);
