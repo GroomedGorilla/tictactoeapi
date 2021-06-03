@@ -15,5 +15,17 @@
   "bugs": {
     "url": "https://github.com/GroomedGorilla/tictactoeapi/issues"
   },
-  "homepage": "https://github.com/GroomedGorilla/tictactoeapi#readme"
+  "homepage": "https://github.com/GroomedGorilla/tictactoeapi#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
 }
