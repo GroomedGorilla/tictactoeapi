@@ -14,14 +14,13 @@ const winningCombos = [
   [2, 4, 6],
   [0, 4, 8],
 ];
-const winningSet = { player: 2, " ": 1 };
 const playerCharacter = "x";
 const serverCharacter = "o";
 
 const isValidBoard = (board) => {
   // board length limited to 9
   const validBoardLength = board.length == 9;
-  // allowed characters (x,o ' ')
+  // allowed characters (x,o, ' ')
   const usesAllowedCharacters = /^[x\o\ ]+$/.test(board);
   // at least one empty space (catches case where game is already over)
   const emptySpot = board.includes(" ");
@@ -33,8 +32,6 @@ const isValidBoard = (board) => {
   // Server can play if:
   // - the board is empty.
   // - the player has player up to once more than the server
-  console.log(`Player turns ${numberOfPlayerTurns}`);
-  console.log(`Player turns ${numberOfServerTurns}`);
   const serversTurn =
     board.trim() != ""
       ? numberOfPlayerTurns - numberOfServerTurns in [0, 1]
@@ -52,11 +49,11 @@ const isValidBoard = (board) => {
   return validityChecks.every(Boolean);
 };
 
-const playerWins = (board, player = playerCharacter) => {
+const playerWins = (board, playerChar = playerCharacter) => {
   // find indices for player moves
   const playerMoveIndexes = board
     .split("")
-    .flatMap((char, i) => (char == player ? i : []));
+    .flatMap((char, i) => (char == playerChar ? i : []));
   // check if player moves satisfy any of the winning combos
   const playerWins = winningCombos.map((combo) =>
     combo.reduce(

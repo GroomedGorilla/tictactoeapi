@@ -3,8 +3,7 @@ var app = express(); // define app using express
 
 var port = process.env.PORT || 8080; // set port
 
-// ROUTES FOR TIC TAC TOE API
-// =============================================================================
+// === Routes for TicTacToe API ===
 var router = express.Router(); // get an instance of the express Router
 require("./routes/tictactoe")(router);
 // === Registering Routes ===

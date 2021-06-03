@@ -28,7 +28,6 @@ const serverTurn = (board) => {
   const numPlayerTurns = (board.match(/x/g) || []).length;
   const numServerTurns = (board.match(/o/g) || []).length;
   serverMaximising = board.trim() == "" || numPlayerTurns == numServerTurns;
-  console.log(serverMaximising ? "Server MAX" : "Server MIN");
 
   if (!serverMaximising) {
     roleMapping["o"] = "min";
@@ -60,13 +59,11 @@ const calcServerMove = (board) => {
         if (score > bestScore) {
           bestScore = score;
           chosenMoveIndex = index;
-          console.log(`Chosen move = ${chosenMoveIndex}`);
         }
       } else {
         if (score < bestScore) {
           bestScore = score;
           chosenMoveIndex = index;
-          console.log(`Chosen move = ${chosenMoveIndex}`);
         }
       }
     }
@@ -84,10 +81,6 @@ const minimax = (board, isMaximising) => {
   let gameResult = gameOver(board);
   if (gameResult) {
     // if game over, return correct score by role
-    //TODO check this!
-    console.log(`Game Result = ${gameResult}`);
-    console.log(`Role Mapping = ${roleMapping[gameResult]}`);
-    console.log(`Scoring = ${scoring[roleMapping[gameResult]]}`);
     return scoring[roleMapping[gameResult]];
   }
 
@@ -107,9 +100,6 @@ const minimax = (board, isMaximising) => {
         boardArray[index] = serverMaximising ? serverCharacter : playerCharacter;
         // look at possible moves in next game turn (change of player + role)
         let score = minimax(boardArray.join(""), false);
-        console.log(`MAXimising score ${score}`);
-        console.log(`MAXimising best score ${bestScore}`);
-
         bestScore = Math.max(score, bestScore);
       }
     });
@@ -129,8 +119,6 @@ const minimax = (board, isMaximising) => {
         boardArray[index] = serverMaximising ? playerCharacter : serverCharacter;
         // look at possible moves in next game turn (change of player + role)
         let score = minimax(boardArray.join(""), true);
-        console.log(`MINimising score ${score}`);
-        console.log(`MINimising best score ${bestScore}`);
         bestScore = Math.min(score, bestScore);
       }
     });
