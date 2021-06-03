@@ -1,4 +1,10 @@
-const { serverCharacter } = require("./board");
+const { serverCharacter, gameOver } = require("./board");
+
+const scoring = {
+  o: 1,
+  x: -1,
+  tie: 0,
+};
 
 const serverTurn = (board) => {
   //   if server gets the first move, go for centre
@@ -6,13 +12,12 @@ const serverTurn = (board) => {
     return "    o    ";
   }
 
-  // TODO calculate server move
   const serverMove = calcServerMove(board);
   return serverMove;
 };
 
 const calcServerMove = (board) => {
-  // minimax first loop - assuming Maximising
+  // minimax initial loop - Server is Maximising
   let bestScore = -Infinity;
   let chosenMoveIndex;
   // get indices of white space (i.e. possible moves)
@@ -27,7 +32,6 @@ const calcServerMove = (board) => {
       boardArray[index] = serverCharacter;
       // look at possible moves in next game turn (change of player + role)
       let testMove = boardArray.join("");
-      // TODO minimax logic
       let score = minimax(testMove, false);
       if (score > bestScore) {
         bestScore = score;
@@ -45,8 +49,57 @@ const calcServerMove = (board) => {
 };
 
 const minimax = (board, isMaximising) => {
-  // TODO implement minimax
-  return 1;
+  // check if game is over (i.e. terminal state)
+  let gameResult = gameOver(board);
+  if (gameResult) {
+    //TODO check this!
+    console.log(`Game Result = ${gameResult}`);
+    console.log(`Scoring = ${scoring[gameResult]}`);
+    return scoring[gameResult];
+  }
+
+  if (isMaximising) {
+    let bestScore = -Infinity;
+    // get indices of white space (i.e. possible moves)
+    let emptyIndices = [];
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] === " ") emptyIndices.push(i);
+    }
+
+    emptyIndices.forEach((index) => {
+      if (board[index] === " ") {
+        let boardArray = board.split("");
+        boardArray[index] = "o";
+        // look at possible moves in next game turn (change of player + role)
+        let score = minimax(boardArray.join(""), true);
+        console.log(`MAXimising score ${score}`);
+        console.log(`MAXimising best score ${bestScore}`);
+
+        bestScore = Math.max(score, bestScore);
+      }
+    });
+    return bestScore;
+  } else {
+    bestScore = Infinity;
+    // get indices of white space (i.e. possible moves)
+    let emptyIndices = [];
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] === " ") emptyIndices.push(i);
+    }
+
+    emptyIndices.forEach((index) => {
+      if (board[index] === " ") {
+        let boardArray = board.split("");
+        boardArray[index] = "x";
+        // look at possible moves in next game turn (change of player + role)
+        let score = minimax(boardArray.join(""), false);
+        console.log(`MINimising score ${score}`);
+        console.log(`MINimising best score ${bestScore}`);
+        bestScore = Math.min(score, bestScore);
+      }
+    });
+    return bestScore;
+  }
 };
 
 module.exports = {
