@@ -1,3 +1,23 @@
+// * Winning combos by index, based on the following board structure:
+// * 0|1|2
+// * =====
+// * 3|4|5
+// * =====
+// * 6|7|8
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [2, 4, 6],
+  [0, 4, 8],
+];
+const winningSet = { player: 2, " ": 1 };
+const playerCharacter = "x";
+const serverCharacter = "o";
+
 const isValidBoard = (board) => {
   // board length
   const validBoardLength = board.length == 9;
@@ -8,6 +28,7 @@ const isValidBoard = (board) => {
 
   const numberOfPlayerTurns = (board.match(/x/g) || []).length;
   const numberOfServerTurns = (board.match(/o/g) || []).length;
+  // const gameAlreadyOver = gameOver(board);
 
   // Server can play if:
   // - the board is empty.
@@ -24,12 +45,29 @@ const isValidBoard = (board) => {
     usesAllowedCharacters,
     emptySpot,
     serversTurn,
+    //   !gameAlreadyOver,
   ];
 
   //Returns true if board passes all checks
   return validityChecks.every(Boolean);
 };
 
+const playerWins = (board, player = playerCharacter) => {
+    // find indices for player moves
+    const playerMoveIndexes = board
+    .split("")
+    .flatMap((char, i) => (char == player ? i : []));
+    // check if player moves satisfy any of the winning combos
+  const playerWins = winningCombos.map((combo) =>
+    combo.reduce(
+      (acc, current) => acc & playerMoveIndexes.includes(current),
+      true
+    )
+  );
+  return playerWins.includes(1);
+};
+
 module.exports = {
   isValidBoard,
+  playerWins
 };
